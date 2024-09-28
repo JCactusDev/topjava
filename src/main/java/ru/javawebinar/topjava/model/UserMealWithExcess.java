@@ -1,6 +1,7 @@
 package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class UserMealWithExcess {
     private final LocalDateTime dateTime;
@@ -20,11 +21,8 @@ public class UserMealWithExcess {
 
     @Override
     public String toString() {
-        return "UserMealWithExcess{" +
-                "dateTime=" + dateTime +
-                ", description='" + description + '\'' +
-                ", calories=" + calories +
-                ", excess=" + excess +
-                '}';
+        return String.format("UserMealWithExcess [dateTime=%s, description=%s, calories=%s, excess=%s]",
+                dateTime, description, calories, excess
+        );
     }
 }

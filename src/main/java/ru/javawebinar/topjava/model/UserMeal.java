@@ -3,6 +3,7 @@ package ru.javawebinar.topjava.model;
 import java.time.LocalDateTime;
 
 public class UserMeal {
+
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -26,4 +27,12 @@ public class UserMeal {
     public int getCalories() {
         return calories;
     }
+
+    @Override
+    public String toString() {
+        return String.format("UserMeal [dateTime=%s, description=%s, calories=%s]",
+                dateTime, description, calories
+        );
+    }
+
 }

@@ -1,9 +1,8 @@
 package ru.javawebinar.topjava.model;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
-public class UserMealWithExcess {
+public class MealTo {
     private final LocalDateTime dateTime;
 
     private final String description;
@@ -12,7 +11,7 @@ public class UserMealWithExcess {
 
     private final boolean excess;
 
-    public UserMealWithExcess(LocalDateTime dateTime, String description, int calories, boolean excess) {
+    public MealTo(LocalDateTime dateTime, String description, int calories, boolean excess) {
         this.dateTime = dateTime;
         this.description = description;
         this.calories = calories;
@@ -21,8 +20,11 @@ public class UserMealWithExcess {
 
     @Override
     public String toString() {
-        return String.format("UserMealWithExcess [dateTime=%s, description=%s, calories=%s, excess=%s]",
-                dateTime, description, calories, excess
-        );
+        return "MealTo{" +
+                "dateTime=" + dateTime +
+                ", description='" + description + '\'' +
+                ", calories=" + calories +
+                ", excess=" + excess +
+                '}';
     }
 }

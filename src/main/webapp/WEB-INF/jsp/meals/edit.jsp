@@ -11,7 +11,7 @@
         <h2>Meal edit:</h2>
         <main>
             <jsp:useBean id="meal" type="ru.javawebinar.topjava.model.Meal" scope="request" />
-            <form class="edit_form grid_area" action="meals?id=${meal.id}" method="post">
+            <form class="edit-form grid-area" action="meals?id=${meal.id}" method="post">
                 <label for="dateTime">DateTime</label>
                 <input type="datetime-local" name="dateTime" id="dateTime" value="${meal.dateTime}">
 

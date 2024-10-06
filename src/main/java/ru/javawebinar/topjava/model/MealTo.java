@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 public class MealTo {
 
-    private Long id;
+    private long id;
     private final LocalDateTime dateTime;
     private final String description;
     private final int calories;
     private boolean excess;
 
-    public MealTo(Long id, LocalDateTime dateTime, String description, int calories, boolean excess) {
+    public MealTo(long id, LocalDateTime dateTime, String description, int calories, boolean excess) {
         this.id = id;
         this.dateTime = dateTime;
         this.description = description;
@@ -18,11 +18,11 @@ public class MealTo {
         this.excess = excess;
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

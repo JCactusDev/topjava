@@ -1,10 +1,10 @@
 package ru.javawebinar.topjava.web;
 
-import jakarta.servlet.ServletConfig;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
@@ -39,7 +39,7 @@ public class MealServlet extends HttpServlet {
                 doGetActionGetById(request, response);
                 break;
             case "delete":
-                doDelete(request, response);
+                doGetActionDelete(request, response);
                 break;
             default:
                 doGetActionDefault(request, response);
@@ -48,25 +48,20 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         Meal meal = new Meal();
         fillMealWithRequest(meal, request);
-
         final String paramId = request.getParameter("id");
         if(!paramId.isEmpty()) {
             meal.setId(Long.parseLong(paramId));
         }
-
-        meal = service.save(meal);
-        request.setAttribute("meal", meal);
-        request.getRequestDispatcher("/WEB-INF/jsp/meals/edit.jsp").forward(request, response);
+        service.save(meal);
+        response.sendRedirect("meals");
     }
 
     @Override
     protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        final String paramId = request.getParameter("id");
-        final Long id = Long.parseLong(paramId);
-        service.deleteById(id);
-        response.sendRedirect("meals");
+
     }
 
     private void doGetActionDefault(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -85,6 +80,13 @@ public class MealServlet extends HttpServlet {
         Meal meal = service.findById(id);
         request.setAttribute("meal", meal);
         request.getRequestDispatcher("/WEB-INF/jsp/meals/edit.jsp").forward(request, response);
+    }
+
+    protected void doGetActionDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        final String paramId = request.getParameter("id");
+        final Long id = Long.parseLong(paramId);
+        service.deleteById(id);
+        response.sendRedirect("meals");
     }
 
     private void fillMealWithRequest(Meal meal, HttpServletRequest request) {

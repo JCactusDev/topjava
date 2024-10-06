@@ -59,11 +59,6 @@ public class MealServlet extends HttpServlet {
         response.sendRedirect("meals");
     }
 
-    @Override
-    protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
     private void doGetActionDefault(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setAttribute("meals", MealsUtil.mealToMealTo(service.findAll(), CALORIES_PER_DAY));
         request.getRequestDispatcher("/WEB-INF/jsp/meals/list.jsp").forward(request, response);

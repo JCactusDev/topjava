@@ -47,12 +47,7 @@ public class MealsUtil {
         List<MealTo> result = new ArrayList<>();
         for (Meal meal : meals) {
             if (TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime)) {
-                result.add(new MealTo(
-                        meal.getDateTime(),
-                        meal.getDescription(),
-                        meal.getCalories(),
-                        caloriesGroupByLocalDate.get(meal.getDate()) > caloriesPerDay)
-                );
+                result.add(mealToMealTo(meal, caloriesGroupByLocalDate.get(meal.getDate()) > caloriesPerDay));
             }
         }
         return result;
@@ -65,13 +60,7 @@ public class MealsUtil {
                 );
         return meals.stream()
                 .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
-                .map(meal ->
-                        new MealTo(
-                                meal.getDateTime(),
-                                meal.getDescription(),
-                                meal.getCalories(),
-                                caloriesGroupByLocalDate.get(meal.getDate()) > caloriesPerDay
-                        )
+                .map(meal -> mealToMealTo(meal, caloriesGroupByLocalDate.get(meal.getDate()) > caloriesPerDay)
                 )
                 .collect(Collectors.toList());
     }
@@ -86,12 +75,7 @@ public class MealsUtil {
                             .mapToInt(Meal::getCalories).sum() > caloriesPerDay;
                     return dayMeals.stream()
                             .filter(meal -> TimeUtil.isBetweenHalfOpen(meal.getTime(), startTime, endTime))
-                            .map(meal -> new MealTo(
-                                            meal.getDateTime(),
-                                            meal.getDescription(),
-                                            meal.getCalories(),
-                                            exceed
-                                    )
+                            .map(meal -> mealToMealTo(meal, exceed)
                             );
                 })
                 .collect(Collectors.toList());
@@ -118,12 +102,7 @@ public class MealsUtil {
             private Stream<MealTo> finisher() {
                 final boolean exceed = dailySumOfCalories > caloriesPerDay;
                 return meals.stream()
-                        .map(meal -> new MealTo(
-                                        meal.getDateTime(),
-                                        meal.getDescription(),
-                                        meal.getCalories(),
-                                        exceed
-                                )
+                        .map(meal -> mealToMealTo(meal, exceed)
                         );
             }
         }
@@ -134,6 +113,21 @@ public class MealsUtil {
                 )
                 .values().stream()
                 .flatMap(t -> t)
+                .sorted(Comparator.comparing(MealTo::getDateTime))
                 .collect(Collectors.toList());
+    }
+
+    public static List<MealTo> mealToMealTo(List<Meal> meals, int caloriesPerDay) {
+        return filteredByStreamInnerClass(meals, LocalTime.MIN, LocalTime.MAX, caloriesPerDay);
+    }
+
+    public static MealTo mealToMealTo(Meal meal, boolean exceed) {
+        return new MealTo(
+                meal.getId(),
+                meal.getDateTime(),
+                meal.getDescription(),
+                meal.getCalories(),
+                exceed
+        );
     }
 }

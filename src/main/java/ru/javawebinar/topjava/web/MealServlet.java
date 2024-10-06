@@ -24,12 +24,14 @@ public class MealServlet extends HttpServlet {
 
     @Override
     public void init(ServletConfig config) throws ServletException {
+        log.debug("Init MealServlet");
         service = new MealServiceImpl();
         super.init(config);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("MealServlet: Process GET request");
         final String action = request.getParameter("action");
         switch (action == null ? "default" : action) {
             case "new":
@@ -48,6 +50,7 @@ public class MealServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        log.debug("MealServlet: Process POST request");
         request.setCharacterEncoding("UTF-8");
         Meal meal = new Meal();
         fillMealWithRequest(meal, request);
@@ -55,6 +58,7 @@ public class MealServlet extends HttpServlet {
         if(!paramId.isEmpty()) {
             meal.setId(Long.parseLong(paramId));
         }
+        log.info("MealServlet: save meal with id " + paramId);
         service.save(meal);
         response.sendRedirect("meals");
     }
@@ -72,6 +76,7 @@ public class MealServlet extends HttpServlet {
     private void doGetActionGetById(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final String paramId = request.getParameter("id");
         final Long id = Long.parseLong(paramId);
+        log.info("MealServlet: get meal with id {}", paramId);
         Meal meal = service.findById(id);
         request.setAttribute("meal", meal);
         request.getRequestDispatcher("/WEB-INF/jsp/meals/edit.jsp").forward(request, response);
@@ -80,6 +85,7 @@ public class MealServlet extends HttpServlet {
     protected void doGetActionDelete(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         final String paramId = request.getParameter("id");
         final Long id = Long.parseLong(paramId);
+        log.info("MealServlet: delete meal with id {}", paramId);
         service.deleteById(id);
         response.sendRedirect("meals");
     }

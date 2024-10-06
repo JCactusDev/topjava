@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class MealMemoryRepositoryImpl implements MealRepository {
 
-    private volatile Map<Long, Meal> storage = new HashMap<>();
+    private Map<Long, Meal> storage = new HashMap<>();
     private final AtomicLong indexCounter = new AtomicLong(1);
 
     {
@@ -26,7 +26,7 @@ public class MealMemoryRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public synchronized Meal save(Meal meal) {
+    public Meal save(Meal meal) {
         if (meal.getId() == null) {
             meal.setId(indexCounter.incrementAndGet());
             storage.put(meal.getId(), meal);
@@ -35,7 +35,7 @@ public class MealMemoryRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public synchronized Iterable<Meal> findAll() {
+    public Iterable<Meal> findAll() {
         return storage.values();
     }
 

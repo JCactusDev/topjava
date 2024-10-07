@@ -5,11 +5,12 @@ import ru.javawebinar.topjava.model.Meal;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class MealMemoryRepositoryImpl implements MealRepository {
 
-    private Map<Long, Meal> storage = new HashMap<>();
+    private Map<Long, Meal> storage = new ConcurrentHashMap<>();
     private final AtomicLong indexCounter = new AtomicLong(1);
 
     {
@@ -40,12 +41,12 @@ public class MealMemoryRepositoryImpl implements MealRepository {
     }
 
     @Override
-    public synchronized Optional<Meal> findById(Long id) {
-        return storage.containsKey(id) ? Optional.of(storage.get(id)) : Optional.empty();
+    public Optional<Meal> findById(Long id) {
+        return Optional.ofNullable(storage.get(id));
     }
 
     @Override
-    public synchronized void deleteById(Long id) {
+    public void deleteById(Long id) {
         storage.remove(id);
     }
 
